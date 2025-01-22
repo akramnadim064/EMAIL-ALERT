@@ -1,0 +1,122 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Alert System</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="container">
+        <h1>Email Alert System</h1>
+        <form id="alertForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number:</label>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+1234567890" required>
+            </div>
+            <button type="submit">Set Alert</button>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+    <script>
+        document.getElementById('alertForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = 'Setting alert...';
+
+            const response = await fetch('/api/set-alert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, whatsapp }),
+            });
+
+            if (response.ok) {
+                responseMessage.textContent = 'Alert set successfully!';
+            } else {
+                responseMessage.textContent = 'Failed to set alert: ' + response.statusText;
+            }
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+<!-- form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Alert System</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Email Alert System</h1>
+        <form id="alertForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp Number:</label>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+1234567890" required>
+            </div>
+            <button type="submit">Set Alert</button>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <!-- Merged Script -->
+    <script>
+        document.getElementById('alertForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = 'Setting alert...';
+
+            try {
+                const response = await fetch('/api/set-alert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, whatsapp }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    responseMessage.textContent = data.message;
+                } else {
+                    responseMessage.textContent = data.message;
+                    if (data.message.includes('Phone number verification failed')) {
+                        window.location.href = 'https://www.twilio.com/whatsapp/signup'; // Redirect to Twilio registration page
+                    }
+                }
+            } catch (error) {
+                responseMessage.textContent = 'Failed to set alert: ' + error.message;
+            }
+        });
+    </script>
+    
+</body>
+</html>
